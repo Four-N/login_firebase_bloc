@@ -49,6 +49,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         .logOut()); //เรียกใช้เมธอด logOut() จาก AuthenticationRepository เพื่อทำการล็อกเอ้าท์
   }
 
+  //จัดการเกี่ยวกับการยกเลิก
   @override
   Future<void> close() {
     _userSubscription.cancel();

@@ -18,6 +18,30 @@ ________________________________________________________________________________
 
 ### ในส่วนของตัว Application 
 
-[App]
+- App Bloc
+
+    จะจัดการในส่วนของ global state ของ application แล้วยังมีตัว dependency บนตัว AuthenticationRepository และ ติดตามตัว user Stream ตามลำดับที่ส่งออก(emit) new state ในการตอบสนองการเปลี่ยนแปลงของ user ปัจจุบัน
+
+    - app_event.dart
+
+        จัดการในส่วนของเหตุการต่างๆ เพื่อสื่อสารกับตัว app_bloc ใน directory ของ app 
+
+        โดยใน event มี 2 subclasses 
+
+            1.AppUserChanged จะแจ้ง bloc เกี่ยวกับ user ปัจจุบันนั้นถูกเปลี่ยนแปลง
+
+            2.AppLogoutRequested จะแจ้ง bloc เกี่ยวกับการที่ user ปัจจุบันนั้นขอ logout
+
+    - app_state.dart
+
+        จะทำการระบุสถานะของ app ซึ่งมีอยู่ 2 สถานะ ก็คือ authenticated และ unauthenticated
+        
+    - app_bloc.dart
+
+        จะตอบสนองโดยรับ  app_event เข้ามา และจะเปลี่ยนรูปแบบโดยส่ง app_state ออกไป 
+
+    
+        
+
 
     
