@@ -1,16 +1,21 @@
 # login_firebase_bloc
 
-A new Flutter project.
+Flutter project for practice with flutter_bloc 
 
-## Getting Started
+## สร้าง Package Authenticate Repository ไว้ใช้
 
-This project is a starting point for a Flutter application.
+  เพื่อจะดูแลในส่วนของรายละเอียดชองวิธีที่จะ authenticated และ fetch(ดึง) ข้อมูลผู้ใช้
 
-A few resources to get you started if this is your first Flutter project:
+- user.dart
+  
+  สร้างเป็น models สำหรับระบุประเภทค่าของ User ภายใน authentication domain
+  
+- authentication_repository.dart
+  
+  จะจัดการในส่วนของวิธีการที่จะ authenticated ร่วมไปจนถึงวิธีการที่ user จะถูกดึงมาใช้ (fetched)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+_____________________________________________________________________________________________________________________________________________________________________________________
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### ในส่วนของตัว Application 
+
+    
