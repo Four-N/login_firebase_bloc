@@ -79,4 +79,4 @@ ________________________________________________________________________________
 
 
 
-![Alt text](assets/bloc_logo_small.png)
+                                                            ![Alt text](assets/bloc_logo_small.png)
