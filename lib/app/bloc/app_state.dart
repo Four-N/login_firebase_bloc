@@ -1,5 +1,6 @@
 part of 'app_bloc.dart';
 
+///ระบุสถานะของ app
 enum AppStatus {
   authenticated,
   unauthenticated,

@@ -3,6 +3,7 @@ import 'package:login_firebase_bloc/app/bloc/app_bloc.dart';
 import 'package:login_firebase_bloc/home/view/home_page.dart';
 import 'package:login_firebase_bloc/login/view/login_page.dart';
 
+//ใช้ในการกำหนดหน้าที่แสดงใน app
 List<Page<dynamic>> onGenerateAppViewPages(
   AppStatus state,
   List<Page<dynamic>> pages,

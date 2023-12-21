@@ -4,6 +4,7 @@ sealed class AppEvent extends Equatable {
   const AppEvent();
 }
 
+///แจ้งกับ bloc ว่า user ปัจจุบันต้องการที่จะขอ logout
 final class AppLogoutRequested extends AppEvent {
   const AppLogoutRequested();
 
@@ -11,6 +12,7 @@ final class AppLogoutRequested extends AppEvent {
   List<Object?> get props => [];
 }
 
+///แจ้งกับ bloc ว่า user ปัจจุบัน ถูกเปลี่ยน
 final class _AppUserChanged extends AppEvent {
   const _AppUserChanged(this.user);
 

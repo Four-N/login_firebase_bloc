@@ -4,9 +4,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart' show kIsWeb;
-// import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:meta/meta.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
   const SignUpWithEmailAndPasswordFailure([
@@ -40,7 +38,7 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
         return const SignUpWithEmailAndPasswordFailure();
     }
   }
-  // ข้อตวามที่เกี่ยวข้องกับ error
+  // ข้อความที่เกี่ยวข้องกับ error
   final String message;
 }
 
@@ -116,6 +114,7 @@ class LogInWithGoogleFailure implements Exception {
 
 class LogOutFailure implements Exception {}
 
+//เก็บข้อมูลสำหรับจัดการ user auth
 class AuthenticationRepository {
   AuthenticationRepository({
     CacheClient? cache,
@@ -129,10 +128,16 @@ class AuthenticationRepository {
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
+  ///ใช้สำหรับเทส
   bool isWeb = kIsWeb;
 
+  /// user cache key
+  /// ใช้สำหรับ test
   static const userCacheKey = '__user_cache_ket__';
 
+  ///Stream of [User] เพื่อที่จะส่ง user ปัจจุบันเมื่อ auth state นั้นถูเปลี่ยน
+  ///
+  ///Emits [User.empty] ถ้า user ไม่ได้ authenticated
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
@@ -141,16 +146,21 @@ class AuthenticationRepository {
     });
   }
 
+  ///return cached user ปัจจุบัน
+  ///Defaluts to [User.empty] ถ้า user ไม่ cached
   User get currentUser {
     return _cache.read<User>(key: userCacheKey) ?? User.empty;
   }
 
+  ///สร้าง new user พร้อมกับ provi email และ password
   Future<void> signUp({required String email, required String password}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      ///Throws SignUpWithEmailAndPasswordFailure ถ้าเกิด catch
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.formCode(e.code);
     } catch (_) {
@@ -158,6 +168,7 @@ class AuthenticationRepository {
     }
   }
 
+  ///sign in with google
   Future<void> logInWithGoogle() async {
     try {
       late final firebase_auth.AuthCredential credential;
@@ -176,6 +187,7 @@ class AuthenticationRepository {
         );
       }
 
+      ///throw LogInWithGoogleFailure ถ้าเกิด catch
       await _firebaseAuth.signInWithCredential(credential);
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw LogInWithGoogleFailure.formCode(e.code);
@@ -184,6 +196,7 @@ class AuthenticationRepository {
     }
   }
 
+  ///sign in with email and password
   Future<void> logInWithEmailAndPassword({
     required String email,
     required String password,
@@ -193,6 +206,8 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
+
+      ///throw LogInWithEmailAndPasswordFailure ถ้าเกิด catch
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw LogInWithEmailAndPasswordFailure.formCode(e.code);
     } catch (_) {
@@ -200,12 +215,15 @@ class AuthenticationRepository {
     }
   }
 
+  ///sign out user ปัจจุบันซึ่งจะส่ง(emit) User.empty จาก user Stream
   Future<void> logOut() async {
     try {
       await Future.wait([
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
       ]);
+
+      ///throw LogOutFailure ถ้าเกิด catch
     } catch (_) {
       throw LogOutFailure();
     }
@@ -213,6 +231,7 @@ class AuthenticationRepository {
 }
 
 extension on firebase_auth.User {
+  ///Map firebase_auth.User เข้ากับ User
   User get toUser {
     return User(id: uid, email: email, name: displayName, photo: photoURL);
   }

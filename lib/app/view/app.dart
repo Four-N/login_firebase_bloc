@@ -7,11 +7,15 @@ import 'package:login_firebase_bloc/app/routes/routes.dart';
 
 class App extends StatelessWidget {
   const App(
-      {required AuthenticationRepository authenticationRepository, super.key})
+
+      ///รับ [AuthenticationRepository] เป็น parameter ในการสร้าง instance ของ class
+      {required AuthenticationRepository authenticationRepository,
+      super.key})
       : _authenticationRepository = authenticationRepository;
 
   final AuthenticationRepository _authenticationRepository;
 
+  ///ทำการ provide [AuthenticationRepository] ผ่าน [RepositoryProvider]
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
